@@ -1,10 +1,12 @@
+(function () {
+	"use strict";
 
 var fs = require('fs'),
 path = require('path'),
 async = require('async'),
-meta = module.parent.require('./meta');
-var settings = {};
+meta = module.parent.require('./meta'),
 Adsense = {
+	config: {},
 	init: function() {
 		var	_self = this,
 		fields = [
@@ -24,9 +26,15 @@ Adsense = {
 
 		};
 		meta.settings.get('google-adsense', function(err, options) {
-			for(var field in options) {
-				if (options.hasOwnProperty(field)) {
-					settings[field] = options[field];
+			for(var field in defaults) {
+				if (!options.hasOwnProperty(field)) {
+					_self.config[field] = defaults[field];
+				} else {
+					if (field !== 'client_id' && field !== 'header_id' && field !== 'footer_id' && field !== 'first_post_id' && field !== 'after_first_post_id' && field !== 'first_post_position') {
+						_self.config[field] = options[field] === 'on' ? true : false;
+					} else {
+						_self.config[field] = options[field];
+					}
 				}
 			}
 			fs.writeFile("public/google-adsense.config.json", JSON.stringify(settings), function (err){
@@ -44,13 +52,16 @@ Adsense = {
 
 			callback(null, custom_header);
 		},
-		onLoad: function(app, middleware, controllers) {
+		onLoad: function(params, callback) {
 			function render(req, res, next) {
 				res.render('admin/plugins/google-adsense', {});
 			}
 
-			app.get('/admin/plugins/google-adsense', middleware.admin.buildHeader, render);
-			app.get('/api/admin/plugins/google-adsense', render);
+			params.router.get('/admin/plugins/google-adsense', params.middleware.admin.buildHeader, render);
+			params.router.get('/api/admin/plugins/google-adsense', render);
+
+			Adsense.init();
+			callback();
 		},
 		activate: function(id) {
 			if (id === 'nodebb-plugin-google-adsense') {
@@ -82,9 +93,12 @@ Adsense = {
 	}
 };
 
+module.exports = Adsense;
+
+})();
+
 function getInsCode(clientId, dataId){
 	var ad = '<ins class="adsbygoogle" style="display:block; margin:0 auto; margin-bottom:15px; " data-ad-client="' + clientId + '" data-ad-slot="' + dataId + '" data-ad-format="auto"></ins>';
 	return ad;
 }
-Adsense.init();
-module.exports = Adsense;
+
