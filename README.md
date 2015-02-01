@@ -1,6 +1,7 @@
 # NodeBB Google Adsense Plugin
 
 NodeBB Google Adsense plugin is made to easily place ads on your forum in different areas.
+Updated fork from silveryseven/nodebb-plugin-google-adsense for v0.6.x compatibility (untested)
 
 ## Installation
 

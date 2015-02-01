@@ -1,6 +1,6 @@
 <h1>Google Adsense</h1>
 <p>
-	Detailed readme can be found on <a href="https://github.com/dovydaskukalis/nodebb-plugin-google-adsense" target="_blank">GitHub</a>
+	Detailed readme can be found on <a href="https://github.com/drewdotpro/nodebb-plugin-google-adsense" target="_blank">GitHub</a>
 </p>
 <form role="form" class="google-adsense-settings form">
 	<div class="form-group">
