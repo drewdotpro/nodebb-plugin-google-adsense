@@ -37,7 +37,7 @@ Adsense = {
 					}
 				}
 			}
-			fs.writeFile("public/google-adsense.config.json", JSON.stringify(config), function (err){
+			fs.writeFile("public/google-adsense.config.json", JSON.stringify(settings), function (err){
 			})
 		});
 	},
